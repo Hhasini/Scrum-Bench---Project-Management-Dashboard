@@ -49,9 +49,6 @@
                     <div class="panel-heading" style="padding: 8px 10px 8px 20px ;">
 
                         <h1 style="color: #00a157">Assign Teams</h1>
-                        <h6 ><a href="{{ route('teams.index') }}">Go back to all
-                                Teams</a></h6>
-
                     </div>
 
                 </div>
@@ -103,7 +100,6 @@
                             use \App\Team;
                             use  Illuminate\Support\Facades\DB as DB;
 
-                                   //get unassigned teams
 
                             foreach($projects as $key =>$pro)
 
@@ -171,6 +167,15 @@
 
 
                         </div>
+
+
+
+
+
+
+
+
+
 
 
 

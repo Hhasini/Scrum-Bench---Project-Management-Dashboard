@@ -119,8 +119,7 @@ use \App\User;
 
 
 
-
-                            <div class="form-group">
+                   <div class="form-group">
                     {!! Form::label('assigned_state', ' Assigned State:', ['class' => 'control-label']) !!}
                     {!! Form::text('assigned_state', null, ['class' => 'form-control','style' => 'width:50%;','readonly'=>'true']) !!}
                    </div>

@@ -5,6 +5,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Dev Dashboard</title>
@@ -27,14 +28,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-
     @yield('page_styles')
-
 
 </head>
 <!--
@@ -96,7 +93,24 @@ desired effect
                                         <a href="#">
                                             <div class="pull-left">
                                                 <!-- User Image -->
-                                                <img src="{{ URL::asset('dist/img/pm.png') }}" class="img-circle" alt="User Image">
+                                                <?php
+
+                                                use App\Profile;
+
+                                                $profile = Profile::where('id', '=', Auth::user()->id)->first(); ?>
+
+                                                @if ($profile === null)
+
+                                                    <img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image">
+
+                                                @endif
+                                                @if ($profile !== null)
+                                                    <img src="{{ URL::asset('dist/img/'.$profile->profile_pic)}}" class="img-circle" alt="User Image" >
+
+
+
+                                                @endif
+
                                             </div>
                                             <!-- Message title and timestamp -->
                                             <h4>
@@ -107,7 +121,10 @@ desired effect
                                             <p>Next Release has been scheduled</p>
                                         </a>
                                     </li><!-- end message -->
-                                </ul><!-- /.menu -->
+                                </ul><!-- /.menu -->$sprints = Sprint::all();
+                                return view('sprints.index', array('sprints' => $sprints));
+                                $accounts = Account::all();
+                                return view('accounts.index', array('accounts' => $accounts));
                             </li>
                             <li class="footer"><a href="#">See All Messages</a></li>
                         </ul>
@@ -177,16 +194,60 @@ desired effect
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- The user image in the navbar-->
-                            <img src="{{ URL::asset('dist/img') }}/{{ Auth::user()->name }}.png" class="user-image" alt="User Image">
-                            <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                            <span class="hidden-xs">{{ Auth::user()->name }}</span>
+                            {{-- <img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image">--}}
+                            <?php
+
+
+
+                            $profile = Profile::where('id', '=', Auth::user()->id)->first(); ?>
+
+                            @if ($profile === null)
+
+                                <img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image" height="20" width="20">
+
+                            @endif
+                            @if ($profile !== null)
+                                <img src="{{ URL::asset('dist/img/'.$profile->profile_pic)}}" class="img-circle" alt="User Image" height="20" width="20">
+
+
+
+                                @endif
+
+                                        <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                                <span class="hidden-xs">{{ Auth::user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
                             <li class="user-header">
-                                <img src="{{ URL::asset('dist/img') }}/{{ Auth::user()->name }}.png" class="img-circle" alt="User Image">
+                                <?php
+
+
+
+                                $profile = Profile::where('id', '=', Auth::user()->id)->first(); ?>
+
+                                @if ($profile === null)
+
+                                    <img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image">
+
+                                @endif
+                                @if ($profile !== null)
+                                    <div><img src="{{ URL::asset('dist/img/'.$profile->profile_pic)}}" class="img-circle" alt="User Image" height="96" width="96">
+
+
+                                    </div>
+                                @endif
+
+
+
+                                {{--<img src="{{ URL::asset('dist/img') }}/{{ Auth::user()->name }}.png" class="img-circle" alt="User Image">--}}
                                 <p>
-                                    {{ Auth::user()->name }} - Designation
+                                    {{ Auth::user()->name }} - {{ Auth::user()->designation }}
+
+                                    {{--DB::table('users')
+                                    ->join('role_user', 'users.id', '=', 'role_user.user_id')
+                                    ->join('role', role_user.role_id', '=', 'role.id')
+                                    ->select('role.display_name')
+                                    ->get();--}}
                                 </p>
                             </li>
                             <!-- Menu Body -->
@@ -211,7 +272,24 @@ desired effect
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="{{ URL::asset('dist/img') }}/{{ Auth::user()->name }}.png" class="img-circle" alt="User Image">
+                    <?php
+
+
+
+                    $profile = Profile::where('id', '=', Auth::user()->id)->first(); ?>
+
+                    @if ($profile === null)
+
+                        <img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image">
+
+                    @endif
+                    @if ($profile !== null)
+                        <div><img src="{{ URL::asset('dist/img/'.$profile->profile_pic)}}" class="img-circle" alt="User Image" height="50" width="50">
+
+
+                        </div>
+                    @endif
+
                 </div>
                 <div class="pull-left info">
                     <p>{{ Auth::user()->name }}</p>
@@ -219,6 +297,13 @@ desired effect
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
+
+            <!-- search form (Optional) -->
+
+
+
+
+
 
 
 
@@ -241,37 +326,165 @@ desired effect
 
 
 
+
+
+
+                    <!-- /.search form -->
+
+
+
+
+
+
+
             <!-- /.search form -->
 
             <!-- Sidebar Menu -->
-            <ul class="sidebar-menu">
-                <li class="header">Favourites</li>
-                <!-- Optionally, you can add icons to the links -->
-                <li class="active"><a href="#" class="page-link" name="pages/Projects.html"><i class="fa fa-link"></i>
-                    <span>Projects</span></a></li>>
+            {{-- <ul class="sidebar-menu">
+                 <li class="header">Favourites</li>
+                 <!-- Optionally, you can add icons to the links -->
+                 <li class="active"><a href="#" class="page-link" name="pages/Projects.html"><i class="fa fa-link"></i>
+                     <span>Projects</span></a></li>
 
+ --}}{{----}}
+
+
+
+
+
+
+            {{--GRANTING PERMISSION SANJANI LINKS--}}
+
+            @if(\Auth::user()->can('create_accounts'))
+
+                <li class="active"><a href="{{ url('/accounts') }}"> <i class="fa fa-link"></i> Accounts</a>
+                </li>
+            @endif
+
+
+            @if(\Auth::user()->can('view_activity_log'))
+
+                <li class="active"><a href="{{ url('/activities') }}"> <i class="fa fa-link"></i> Activity Log</a>
+                </li>
+
+            @endif
+
+
+            @if(\Auth::user()->can('create_profile'))
+
+                <li class="active"><a href="{{ url('/profiles') }}"> <i class="fa fa-link"></i> Profile</a>
+                </li>
+
+            @endif
+
+
+            @if(\Auth::user()->can('view_users'))
+
+                <li class="active"><a href="{{ url('/users') }}"> <i class="fa fa-link"></i> Users</a>
+                </li>
+
+            @endif
+
+
+
+
+            @if(\Auth::user()->can('create_idea'))
+
+
+                <?php $results = DB::table('assign_projects')->get();
+                $status=false;
+
+                foreach($results as $result)
+                {
+                    if($result->ProjectManager==\Auth::user()->name)
+                    {
+                        $status=true;
+                        break;
+                    }
+
+                    else
+                    {
+                        $status=false;
+                    }
+                }
+
+                ?>
+
+
+                    @if($status==true)
+
+                        <li class="active"><a href="{{ url('/ideas') }}"> <i class="fa fa-link"></i> Ideas Backlog</a>
+                        </li>
+
+                    @endif
+
+
+
+            @endif
+
+
+
+        @if(\Auth::user()->can('view_super_admin_dashboard'))
+                <li class="active"><a href="{{ url('home') }}"><i class="fa fa-link"></i> Dashboard</a></li>
+            @endif
+
+
+
+            @if(\Auth::user()->can('view_user_roles'))
+
+                <li class="active"><a href="{{ url('/roles') }}"><i class="fa fa-link"></i> User Roles</a>
+                </li>
+            @endif
+
+
+            @if(\Auth::user()->can('edit_permissions'))
+
+                <li class="active"><a href="{{ url('/permissions') }}"><i class="fa fa-link"></i> Permissions</a>
+
+                </li>
+                @endif
+
+
+
+
+
+             {{--HASINI LINKS           --}}
+
+
+            @if(\Auth::user()->can('view_projects'))
 
                 <li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>Projects</span> <i
                                 class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                       <!-- <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/Projects.html') }}">Projects</a></li>
+
+                        <!-- <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/Projects.html') }}">Projects</a></li>
 -->
+
+
+
+
+
                         <li class="active"><a href="{{ url('/projects') }}">Projects</a>
                         </li>
 
+
                         <li class="active"><a href="{{ url('/projects/create') }}">Add Projects</a>
+
+
+                        <li class="active"><a href="{{ url('/assign_teams') }}">view with hidden projects</a>
+
 
 
 
                         <li class="active"><a href="{{ url('/assign/create') }}">Assign Project Managers</a>
 
-                        <li class="active"><a href="{{ url('/assign_teams') }}">view with hidden projects</a>
-
-                        <li class="active"><a href="{{ url('/assign_lead/create') }}">Assign Leads</a>
 
 
-                        <li class="active"><a href="{{ url('/test_case') }}"> Test Lodge</a>
+                        <li class="active"><a href="{{ url('/assign_lead/create') }}">Assign Project Leads</a>
+
+
+
 
 
                         <li class="active"><a href="{{ url('/release_backlog') }}"> Release Backlog</a>
@@ -282,6 +495,10 @@ desired effect
                     </ul>
                 </li>
 
+                @endif
+
+
+            @if(\Auth::user()->can('create_teams'))
 
                 <li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>Teams</span> <i
@@ -295,6 +512,7 @@ desired effect
                         <li class="active"><a href="{{ url('/teams/create') }}">Create Teams</a>
 
 
+
                         <li class="active"><a href="{{ url('/assign_teams/create') }}">Assign Teams</a>
 
 
@@ -305,46 +523,74 @@ desired effect
                         </li>
                     </ul>
                 </li>
+                @endif
 
 
 
+            @if(\Auth::user()->can('view_pm_dashboard'))
+
+                <li class="active"><a href="{{ url('/hide') }}"><i class="fa fa-link"></i> Project Manager
+                        Dashboard</a></li>
+                @endif
 
 
+        {{--LIHINI LINKS--}}
 
 
+                @if(\Auth::user()->can('view_userstories'))
                 <li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>User Story</span> <i
-                            class="fa fa-angle-left pull-right"></i></a>
+                                class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/backlog.php') }}">Backlog</a></li>
+
+                        @if(\Auth::user()->can('view_userstories'))
+                                <!--<li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/backlog.php') }}">Backlog</a></li>-->
+                        <li class="active"><a href="{{ url('/user_stories') }}">Backlog</a>
+                        </li>
                         <li class="active"><a href="{{ url('/sprints') }}">Sprint</a>
                         </li>
-                        <li class="active"><a href="{{ url('/projects') }}">Project</a>
+                        <li class="active"><a href="{{ url('/sprint_schedules') }}">Scrum Board</a>
                         </li>
-                        <li class="active"><a href="#" class="page-link" name="pages/MyDashboard.html">search</a></li>
+                        <li class="active"><a href="{{ url('/story_search') }}">Search</a>
+                        </li>
+                        @endif
+
+                        @if(\Auth::user()->can('create_testcases'))
+
+                            <li class="active"><a href="{{ url('/test_case') }}"> Test Lodge</a>
+                            </li>
+                        @endif
+
                     </ul>
                 </li>
+            @endif
 
+
+
+            @if(\Auth::user()->can('view_devdashboard'))
                 <li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>Dashboards</span> <i
-                            class="fa fa-angle-left pull-right"></i></a>
+                                class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="{{ url('/hide') }}">Project Manager
-                            Dashboard</a></li>
-                        <li class="active">
-
-
-
-
-
-
-
-
-
+                        //This link -> only developers
+                        <li class="active"><a href="{{ url('/dev_dashboard') }}">My Dashboard</a>
                         </li>
                     </ul>
                 </li>
-            </ul><!-- /.sidebar-menu -->
+                @endif
+
+
+                        {{--DANUSHKA LINKS--}}
+
+
+            @if(\Auth::user()->can('view_acchead_dashboard'))
+                <li class="active"><a href="{{ url('home') }}"><i class="fa fa-link"></i> Account Head Dashboard</a></li>
+                @endif
+
+
+
+
+                        <!-- /.sidebar-menu -->
         </section>
         <!-- /.sidebar -->
     </aside>
@@ -354,7 +600,7 @@ desired effect
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                 
+
                 <br/>
             </h1>
             <ol class="breadcrumb">
@@ -365,7 +611,7 @@ desired effect
 
         <!-- Main content -->
         @yield('content')
-		
+
     </div><!-- /.content-wrapper -->
 
     <!-- Main Footer -->
@@ -379,6 +625,7 @@ desired effect
     </footer>
 
 </div><!-- ./wrapper -->
+
 @yield('page_script1')
 
 
@@ -396,10 +643,7 @@ desired effect
 <script src="{{ URL::asset('plugins/input-mask/jquery.inputmask.date.extensions.js') }}"></script>
 <script src="{{ URL::asset('plugins/input-mask/jquery.inputmask.extensions.js') }}"></script>
 
-
 @yield('page_script2')
-
-
 
 
         <!-- Optionally, you can add Slimscroll and FastClick plugins.

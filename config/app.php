@@ -136,6 +136,8 @@ return [
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Html\HtmlServiceProvider',
+		'Zizaco\Entrust\EntrustServiceProvider',
+		'Spatie\Activitylog\ActivitylogServiceProvider',
 
 
 
@@ -147,6 +149,7 @@ return [
 		'App\Providers\ConfigServiceProvider',
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
+		'App\Providers\HelperServiceProvider',
 
 	],
 
@@ -197,11 +200,9 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
 		'Form'      => 'Illuminate\Html\FormFacade',
 		'Html'      => 'Illuminate\Html\HtmlFacade',
-
-
-
-
-
+		'DynUI' => 'App\Helpers\DynamicUIHelper',
+		'Entrust'   =>' Zizaco\Entrust\EntrustFacade',
+		'Activity' => 'Spatie\Activitylog\ActivitylogFacade',
 	],
 
 ];
